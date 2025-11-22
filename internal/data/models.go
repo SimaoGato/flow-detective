@@ -7,7 +7,9 @@ type Context struct {
 	ProjectName      string    `yaml:"project_name"`
 	CurrentIteration string    `yaml:"current_iteration"`
 	Stories          []Story   `yaml:"stories"`
-	LastActivity     time.Time `yaml:"last_activity"` // needed for the "Detective" logic later
+	ActiveStoryID    string    `yaml:"active_story_id"`
+	ActiveTaskName   string    `yaml:"active_task_name"`
+	LastActivity     time.Time `yaml:"last_activity"`
 }
 
 type Story struct {
