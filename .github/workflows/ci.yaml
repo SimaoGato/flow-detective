@@ -1,0 +1,39 @@
+name: Go Quality Check
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Download the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Install Go
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      # 3. Check Formatting (Fail if code is messy)
+      - name: Check Formatting
+        run: if [ -n "$(gofmt -l .)" ]; then echo "Run 'go fmt ./...' to fix formatting"; exit 1; fi
+
+      # 4. Check for Suspicious Code
+      - name: Run Vet
+        run: go vet ./...
+
+      # 5. Run Tests
+      - name: Run Unit Tests
+        run: go test -v ./...
+
+      # 6. Compile (Ensure binary builds)
+      - name: Build Binary
+        run: go build -v ./cmd/flow
